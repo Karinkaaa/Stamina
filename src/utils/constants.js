@@ -13,3 +13,7 @@ export const MIDNIGHT_TIME = "00 : 00";
 export const SIGNS = " signs";
 export const SIGNS_PER_MINUTE = " signs/minute";
 export const PERCENT_SIGN = "%";
+
+export const TIMER_STATE_IDLE = "idle";
+export const TIMER_STATE_START = "start";
+export const TIMER_STATE_STOP = "stop";
