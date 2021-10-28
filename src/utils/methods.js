@@ -10,7 +10,7 @@ export const getTimeInSeconds = (minutes, seconds) => {
 };
 
 export const getTypingSpeed = (typedCorrectChars, seconds) => {
-    return Math.floor((typedCorrectChars / seconds) * 60) || 0;
+    return (seconds <= 0) ? 0 : Math.floor((typedCorrectChars / seconds) * 60);
 };
 
 export const getPercentOfMistakes = (typedChars, typedCorrectChars) => {

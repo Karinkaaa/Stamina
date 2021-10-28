@@ -10,34 +10,46 @@ class Timer {
     }
 
     start() {
+        console.log("- start", this.state);
         if (this.state === TIMER_STATE_IDLE) {
+            console.log("start IF");
             this.state = TIMER_STATE_START;
             this.begin = Date.now();
-            this.interval = setInterval(() => this.cb(), 1000);
+            clearInterval(this.interval);
+            this.interval = setInterval(() => {
+                if (this.state === TIMER_STATE_START) {
+                    this.cb()
+                }
+            }, 1000);
         }
     }
 
     stop() {
+        console.log("- stop", this.state);
         if (this.state === TIMER_STATE_START) {
+            console.log("stop IF");
             this.state = TIMER_STATE_STOP;
             this.end = Date.now();
-            clearInterval(this.interval);
+            // clearInterval(this.interval);
         }
     }
 
     reset() {
+        console.log("reset", this.state);
         this.state = TIMER_STATE_IDLE;
         this.begin = null;
         this.end = null;
-        clearInterval(this.interval);
+        // clearInterval(this.interval);
     }
 
     resume() {
-        if (this.state === TIMER_STATE_STOP) {
+        console.log("- resume", this.state);
+        if (this.state === TIMER_STATE_STOP || this.state === TIMER_STATE_IDLE) {
+            console.log("resume IF");
             this.state = TIMER_STATE_START;
             this.begin = Date.now() - this.getTime();
             this.end = null;
-            this.interval = setInterval(() => this.cb(), 1000);
+            // this.interval = setInterval(() => this.cb(), 1000);
         }
     }
 

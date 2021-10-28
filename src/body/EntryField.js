@@ -7,12 +7,13 @@ const useStyles = makeStyles({
     root: {
         display: "flex",
         padding: "3%",
-        marginTop: "5%"
+        marginTop: "3%"
     },
     left: {
         padding: "15px 0 15px 15px",
-        background: "linear-gradient(45deg, #59608C 30%, #6A90B2 70%)",
-        border: "solid #CF6064D8",
+        background: "#E3E6E9",
+        color: "#CBC9CD",
+        border: "solid #99B4D1",
         borderWidth: "5px 0 5px 5px",
         borderRadius: "26px 0 0 26px",
         textAlign: "right",
@@ -23,8 +24,9 @@ const useStyles = makeStyles({
     },
     right: {
         padding: "15px 15px 15px 0",
-        background: "linear-gradient(45deg, #35B0FF 30%, #3A84FF 70%)",
-        border: "solid #CF6064D8",
+        background: "#FFFFFF",
+        color: "#333333",
+        border: "solid #99B4D1",
         borderWidth: "5px 5px 5px 0",
         borderRadius: "0 26px 26px 0",
         float: "right",
@@ -33,7 +35,7 @@ const useStyles = makeStyles({
         overflow: "hidden"
     },
     pre: {
-        fontSize: 45,
+        fontSize: 50,
         margin: "8px 0"
     }
 });

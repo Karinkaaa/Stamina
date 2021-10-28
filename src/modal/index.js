@@ -45,7 +45,7 @@ const ModalComponent = ({
             className={classes.root}
         >
             <Box className={classes.box}>
-                <ModalText text={TYPED_CHARS} data={typedChars + SIGNS}/>
+                <ModalText text={TYPED_CHARS} data={typedCorrectChars + SIGNS}/>
                 <ModalText text={SPEED} data={speed + SIGNS_PER_MINUTE}/>
                 <ModalText text={ACCURACY} data={accuracy + PERCENT_SIGN}/>
 

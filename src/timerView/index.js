@@ -5,9 +5,9 @@ import { makeStyles, Typography } from "@material-ui/core";
 const useStyles = makeStyles({
     root: {
         textAlign: "center",
-        color: "#000000",
-        background: "linear-gradient(whitesmoke, #87a4ba)",
-        border: "5px solid #CF6064D8",
+        background: "#FFFFFF",
+        color: "#333333",
+        border: "3px solid #99B4D1",
         borderRadius: 20,
         width: 100,
         padding: 10,
