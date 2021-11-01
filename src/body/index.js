@@ -5,8 +5,22 @@ import EntryField from "./EntryField";
 import TimerView from "../timerView";
 import Timer from "../timerView/Timer";
 import { text } from "../utils/text";
-import { ESCAPE, ESCAPE_PAUSE, MIDNIGHT_TIME, SPACE, SPACE_START } from "../utils/constants";
 import { getPercentOfMistakes, getTypingSpeed } from "../utils/methods";
+import {
+    BUTTON_COMPLETE,
+    BUTTON_RESUME,
+    BUTTON_START_OVER,
+    ESCAPE,
+    ESCAPE_PAUSE,
+    MIDNIGHT_TIME,
+    MODE_MODAL,
+    MODE_PAUSE,
+    MODE_PRESTART,
+    MODE_PROGRESS,
+    MODE_START,
+    SPACE,
+    SPACE_START
+} from "../utils/constants";
 
 const useStyles = makeStyles({
     root: {
@@ -22,19 +36,22 @@ const timer = new Timer();
 const Body = () => {
     const classes = useStyles();
 
+    const [time, setTime] = useState(MIDNIGHT_TIME);
     const [open, setOpen] = useState(false);
-    const [start, setStart] = useState(false);
+    const [chartData, setChartData] = useState([]);
+
     const [leftText, setLeftText] = useState(SPACE_START);
     const [rightText, setRightText] = useState(ESCAPE_PAUSE);
     const [typedChars, setTypedChars] = useState(0);
     const [typedCorrectChars, setTypedCorrectChars] = useState(0);
-    const [time, setTime] = useState(MIDNIGHT_TIME);
-    const [chartData, setCharData] = useState([]);
+
+    const [mode, setMode] = useState(MODE_PRESTART);
+    const [prevMode, setPrevMode] = useState("");
 
     timer.cb = () => {
         const seconds = timer.getSeconds();
         setTime(timer.getFormattedTime());
-        console.log("tick");
+
         chartData.push(
             {
                 seconds: seconds,
@@ -44,16 +61,31 @@ const Body = () => {
         );
     };
 
-    const handleOpen = () => {
-        timer.stop();
-        setOpen(true);
+    const resetTypedChars = () => {
+        setTypedChars(0);
+        setTypedCorrectChars(0);
+        setChartData([]);
+    };
+
+    const setDataInPrestartMode = () => {
+        timer.reset();
+        setTime(MIDNIGHT_TIME);
+        setLeftText(SPACE_START);
+        setRightText(ESCAPE_PAUSE);
+        resetTypedChars();
+    };
+
+    const setDataInStartMode = () => {
+        timer.reset();
+        setTime(MIDNIGHT_TIME);
+        setLeftText("");
+        setRightText(text);
+        resetTypedChars();
     };
 
     const handleClickSpaceAtStart = () => {
         setLeftText("");
         setRightText(text);
-        setStart(true);
-        timer.reset();
     };
 
     const handleTypeCorrectSign = (key) => {
@@ -63,70 +95,83 @@ const Body = () => {
         setTypedCorrectChars(typedCorrectChars + 1);
     };
 
-    const handleClickComplete = () => {
-        timer.reset();
-        setLeftText(SPACE_START);
-        setRightText(ESCAPE_PAUSE);
-        setTime(MIDNIGHT_TIME);
-        setTypedChars(0);
-        setTypedCorrectChars(0);
-        setCharData([]);
-        setStart(false);
-        setOpen(false);
+    const handleClose = (event) => {
+        keyDownProcess(event);
     };
 
-    const handleClickStartOver = () => {
-        timer.reset();
-        setLeftText("");
-        setRightText(text);
-        setTime(MIDNIGHT_TIME);
-        setTypedChars(0);
-        setTypedCorrectChars(0);
-        setCharData([]);
-        setOpen(false);
-    };
+    const keyDownProcess = (event) => {
+        const letter = rightText[0];
+        const key = event.key;
+        const code = event.code;
+        const id = event.currentTarget.id;
 
-    const handleClickResume = () => {
-        setOpen(false);
+        if (mode === MODE_PRESTART && code === SPACE) {
+            setMode(MODE_START);
+            setPrevMode(MODE_PRESTART);
+            timer.reset();
+            handleClickSpaceAtStart();
+        } else if (mode === MODE_PRESTART && key === ESCAPE) {
+            setMode(MODE_MODAL);
+            setPrevMode(MODE_PRESTART);
+            timer.reset();
+            setOpen(true);
+        } else if (mode === MODE_START && key === letter) {
+            setMode(MODE_PROGRESS);
+            setPrevMode(MODE_START);
+            timer.start();
+            handleTypeCorrectSign(key);
+        } else if (mode === MODE_START && key === ESCAPE) {
+            setMode(MODE_MODAL);
+            setPrevMode(MODE_START);
+            timer.reset();
+            setOpen(true);
+        } else if (mode === MODE_PROGRESS && key === ESCAPE) {
+            setMode(MODE_MODAL);
+            setPrevMode(MODE_PROGRESS);
+            timer.stop();
+            setOpen(true);
+        } else if (mode === MODE_PROGRESS && key === letter) {
+            handleTypeCorrectSign(key);
+        } else if (mode === MODE_PAUSE && key === ESCAPE) {
+            setMode(MODE_MODAL);
+            setPrevMode(MODE_PAUSE);
+            setOpen(true);
+        } else if (mode === MODE_PAUSE && key === letter) {
+            setMode(MODE_PROGRESS);
+            setPrevMode(MODE_PAUSE);
+            timer.resume();
+            handleTypeCorrectSign(key);
+        } else if (mode === MODE_MODAL && id === BUTTON_COMPLETE) {
+            setMode(MODE_PRESTART);
+            setPrevMode(MODE_MODAL);
+            setOpen(false);
+            setDataInPrestartMode();
+        } else if (mode === MODE_MODAL && id === BUTTON_START_OVER) {
+            setMode(MODE_START);
+            setPrevMode(MODE_MODAL);
+            setOpen(false);
+            setDataInStartMode();
+        } else if (mode === MODE_MODAL && prevMode === MODE_PRESTART && key === ESCAPE) {
+            setMode(MODE_PRESTART);
+            setPrevMode(MODE_MODAL);
+            setOpen(false);
+        } else if (mode === MODE_MODAL && prevMode === MODE_PAUSE && key === ESCAPE) {
+            setMode(MODE_PAUSE);
+            setPrevMode(MODE_MODAL);
+            setOpen(false);
+        } else if (mode === MODE_MODAL && prevMode === MODE_START && key === ESCAPE) {
+            setMode(MODE_START);
+            setPrevMode(MODE_MODAL);
+            setOpen(false);
+        } else if ((mode === MODE_MODAL && prevMode === MODE_PROGRESS && key === ESCAPE) || (mode === MODE_MODAL && id === BUTTON_RESUME)) {
+            setMode(MODE_PAUSE);
+            setPrevMode(MODE_MODAL);
+            setOpen(false);
+        }
     };
 
     window.onkeydown = (event) => {
-        let key = event.key;
-        let letter = rightText[0];
-        console.log(start);
-
-        if (!open) {
-            if (start) {
-                if (leftText !== SPACE_START && key === ESCAPE) {
-                    console.log("1");
-                    handleOpen();
-                    setStart(false);
-                } else if (leftText === "" && key === letter) {
-                    console.log("2");
-                    timer.start();
-                    handleTypeCorrectSign(key);
-                } else if (key === letter) {
-                    console.log("3");
-                    handleTypeCorrectSign(key);
-                } else if (timer.isStarted() && event.keyCode >= 32 && event.keyCode <= 122) {
-                    console.log("4");
-                    setTypedChars(typedChars + 1);
-                }
-            } else {
-                if (key === ESCAPE) {
-                    console.log("5");
-                    handleOpen();
-                } else if (leftText === SPACE_START && rightText === ESCAPE_PAUSE && event.code === SPACE) {
-                    console.log("6");
-                    handleClickSpaceAtStart();
-                } else if (key === letter) {
-                    console.log("7");
-                    handleTypeCorrectSign(key);
-                    setStart(true);
-                    timer.resume();
-                }
-            }
-        }
+        keyDownProcess(event);
     };
 
     return (
@@ -146,10 +191,8 @@ const Body = () => {
                 timer={timer}
                 chartData={chartData}
                 open={open}
-                onClose={handleClickResume}
-                handleClickComplete={handleClickComplete}
-                handleClickStartOver={handleClickStartOver}
-                handleClickResume={handleClickResume}
+                onClose={handleClose}
+                handleClickButton={keyDownProcess}
             />
         </div>
     );
