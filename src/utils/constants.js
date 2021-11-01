@@ -17,3 +17,13 @@ export const PERCENT_SIGN = "%";
 export const TIMER_STATE_IDLE = "idle";
 export const TIMER_STATE_START = "start";
 export const TIMER_STATE_STOP = "stop";
+
+export const MODE_PRESTART = "MODE_PRESTART";
+export const MODE_START = "MODE_START";
+export const MODE_PROGRESS = "MODE_PROGRESS";
+export const MODE_PAUSE = "MODE_PAUSE";
+export const MODE_MODAL = "MODE_MODAL";
+
+export const BUTTON_COMPLETE = "Complete";
+export const BUTTON_START_OVER = "Start over";
+export const BUTTON_RESUME = "Resume";
