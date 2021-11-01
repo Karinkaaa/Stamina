@@ -4,7 +4,17 @@ import { Box, Button, makeStyles, Modal } from "@material-ui/core";
 import Chart from "../chart";
 import ModalText from "./ModalText";
 import { getMinutesAndSeconds, getTimeInSeconds, getTypingAccuracy, getTypingSpeed } from "../utils/methods";
-import { ACCURACY, PERCENT_SIGN, SIGNS, SIGNS_PER_MINUTE, SPEED, TYPED_CHARS } from "../utils/constants";
+import {
+    ACCURACY,
+    BUTTON_COMPLETE,
+    BUTTON_RESUME,
+    BUTTON_START_OVER,
+    PERCENT_SIGN,
+    SIGNS,
+    SIGNS_PER_MINUTE,
+    SPEED,
+    TYPED_CHARS
+} from "../utils/constants";
 
 const useStyles = makeStyles({
     root: {
@@ -18,7 +28,7 @@ const useStyles = makeStyles({
         transform: "translate(-50%, -50%)",
         width: "fit-content",
         height: "fit-content",
-        background: "#181A1BFF",
+        background: "rgba(24,26,27,0.29)",
         boxShadow: "0 0 10px cyan"
     },
     btn: {
@@ -27,10 +37,7 @@ const useStyles = makeStyles({
     }
 });
 
-const ModalComponent = ({
-                            typedChars, typedCorrectChars, timer, chartData, open,
-                            onClose, handleClickComplete, handleClickStartOver, handleClickResume
-                        }) => {
+const ModalComponent = ({ typedChars, typedCorrectChars, timer, chartData, open, onClose, handleClickButton }) => {
     const classes = useStyles();
 
     const { minutes, seconds } = getMinutesAndSeconds(timer.getSeconds());
@@ -52,24 +59,28 @@ const ModalComponent = ({
                 <Chart data={chartData}/>
 
                 <Button
+                    id={BUTTON_COMPLETE}
                     className={classes.btn}
-                    onClick={() => handleClickComplete()}
+                    onClick={handleClickButton}
                 >
-                    Complete
+                    {BUTTON_COMPLETE}
                 </Button>
 
                 <Button
+                    id={BUTTON_START_OVER}
                     className={classes.btn}
-                    onClick={() => handleClickStartOver()}
+                    onClick={handleClickButton}
                 >
-                    Start over
+                    {BUTTON_START_OVER}
                 </Button>
 
                 <Button
+                    id={BUTTON_RESUME}
                     className={classes.btn}
-                    onClick={() => handleClickResume()}
+                    onClick={handleClickButton}
+                    disabled={typedCorrectChars === 0}
                 >
-                    Resume
+                    {BUTTON_RESUME}
                 </Button>
             </Box>
         </Modal>
@@ -89,9 +100,7 @@ ModalComponent.propTypes = {
     ).isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    handleClickComplete: PropTypes.func.isRequired,
-    handleClickStartOver: PropTypes.func.isRequired,
-    handleClickResume: PropTypes.func.isRequired
+    handleClickButton: PropTypes.func.isRequired
 };
 
 export default ModalComponent;

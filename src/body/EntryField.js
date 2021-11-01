@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 const EntryField = ({
                         leftText, rightText, typedChars, typedCorrectChars, timer, open, chartData,
-                        onClose, handleClickComplete, handleClickStartOver, handleClickResume
+                        onClose, handleClickButton
                     }) => {
     const classes = useStyles();
 
@@ -67,9 +67,7 @@ const EntryField = ({
                 chartData={chartData}
                 open={open}
                 onClose={onClose}
-                handleClickComplete={handleClickComplete}
-                handleClickStartOver={handleClickStartOver}
-                handleClickResume={handleClickResume}
+                handleClickButton={handleClickButton}
             />
         </div>
     );
@@ -90,9 +88,7 @@ EntryField.propTypes = {
     ).isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    handleClickComplete: PropTypes.func.isRequired,
-    handleClickStartOver: PropTypes.func.isRequired,
-    handleClickResume: PropTypes.func.isRequired
+    handleClickButton: PropTypes.func.isRequired
 };
 
 export default EntryField;
