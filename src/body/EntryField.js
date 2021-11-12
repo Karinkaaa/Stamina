@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 const EntryField = ({
-                        leftText, rightText, typedChars, typedCorrectChars, timer, open, chartData,
+                        leftText, rightText, typedChars, typedCorrectChars, open, chartData,
                         onClose, handleClickButton
                     }) => {
     const classes = useStyles();
@@ -63,7 +63,6 @@ const EntryField = ({
             <ModalComponent
                 typedChars={typedChars}
                 typedCorrectChars={typedCorrectChars}
-                timer={timer}
                 chartData={chartData}
                 open={open}
                 onClose={onClose}
@@ -78,7 +77,6 @@ EntryField.propTypes = {
     rightText: PropTypes.string.isRequired,
     typedChars: PropTypes.number.isRequired,
     typedCorrectChars: PropTypes.number.isRequired,
-    timer: PropTypes.object.isRequired,
     chartData: PropTypes.arrayOf(
         PropTypes.shape({
             seconds: PropTypes.number.isRequired,

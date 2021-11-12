@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Container, makeStyles, Toolbar } from "@material-ui/core";
-import AppBarComponent from "./AppBarComponent";
-import EntryField from "./EntryField";
-import TimerView from "../timerView";
-import Timer from "../timerView/Timer";
+import React from "react";
+import { Toolbar, withStyles } from "@material-ui/core";
+import EntryField from "../body/EntryField";
+import AppBarComponent from "../body/AppBarComponent";
+import TimerComponent from "../timer";
 import { text } from "../utils/text";
 import { getPercentOfMistakes, getTypingSpeed } from "../utils/methods";
 import {
@@ -12,7 +11,6 @@ import {
     BUTTON_START_OVER,
     ESCAPE,
     ESCAPE_PAUSE,
-    MIDNIGHT_TIME,
     MODE_MODAL,
     MODE_PAUSE,
     MODE_PRESTART,
@@ -22,180 +20,289 @@ import {
     SPACE_START
 } from "../utils/constants";
 
-const useStyles = makeStyles({
+const useStyles = ({
     root: {
         paddingTop: "8%"
-    },
-    timer: {
-        inlineSize: "fit-content"
     }
 });
 
-const timer = new Timer();
+class Body extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            start: false,
+            pause: false,
+            resume: false,
+            stop: false,
+            reset: false,
+            open: false,
+            chartData: [],
+            leftText: SPACE_START,
+            rightText: ESCAPE_PAUSE,
+            typedChars: 0,
+            typedCorrectChars: 0,
+            mode: MODE_PRESTART,
+            prevMode: ""
+        };
+    }
 
-const Body = () => {
-    const classes = useStyles();
+    render() {
+        const classes = this.props;
+        const {
+            start,
+            pause,
+            resume,
+            stop,
+            reset,
+            open,
+            chartData,
+            leftText,
+            rightText,
+            typedChars,
+            typedCorrectChars,
+            mode,
+            prevMode
+        } = this.state;
 
-    const [time, setTime] = useState(MIDNIGHT_TIME);
-    const [open, setOpen] = useState(false);
-    const [chartData, setChartData] = useState([]);
+        const addDataToChart = () => {
+            const seconds = chartData.length;
 
-    const [leftText, setLeftText] = useState(SPACE_START);
-    const [rightText, setRightText] = useState(ESCAPE_PAUSE);
-    const [typedChars, setTypedChars] = useState(0);
-    const [typedCorrectChars, setTypedCorrectChars] = useState(0);
+            chartData.push(
+                {
+                    seconds: seconds,
+                    speed: getTypingSpeed(this.state.typedCorrectChars, seconds),
+                    mistakes: getPercentOfMistakes(this.state.typedChars, this.state.typedCorrectChars)
+                }
+            );
+        };
 
-    const [mode, setMode] = useState(MODE_PRESTART);
-    const [prevMode, setPrevMode] = useState("");
+        const resetTypedChars = () => {
+            this.setState({
+                typedChars: 0,
+                typedCorrectChars: 0,
+                chartData: []
+            });
+        };
 
-    timer.cb = () => {
-        const seconds = timer.getSeconds();
-        setTime(timer.getFormattedTime());
+        const setDataInPrestartMode = () => {
+            this.setState({
+                leftText: SPACE_START,
+                rightText: ESCAPE_PAUSE,
+                start: false,
+                reset: true,
+                pause: false,
+                resume: false,
+                stop: false
+            });
+            resetTypedChars();
+        };
 
-        chartData.push(
-            {
-                seconds: seconds,
-                speed: getTypingSpeed(typedCorrectChars, seconds),
-                mistakes: getPercentOfMistakes(typedChars, typedCorrectChars)
+        const setDataInStartMode = () => {
+            this.setState({
+                leftText: "",
+                rightText: text,
+                start: false,
+                reset: true,
+                pause: false,
+                resume: false,
+                stop: false
+            });
+            resetTypedChars();
+        };
+
+        const handleClickSpaceAtStart = () => {
+            this.setState({
+                leftText: "",
+                rightText: text
+            });
+        };
+
+        const handleTypeCorrectSign = (key) => {
+            this.setState({
+                leftText: this.state.leftText + key,
+                rightText: this.state.rightText.slice(1),
+                typedChars: this.state.typedChars + 1,
+                typedCorrectChars: this.state.typedCorrectChars + 1
+            });
+        };
+
+        const handleTypeIncorrectSign = () => {
+            this.setState({
+                typedChars: this.state.typedChars + 1
+            });
+        };
+
+        const handleCloseAtPrestartMode = () => {
+            this.setState({
+                mode: MODE_PRESTART,
+                prevMode: MODE_MODAL,
+                open: false
+            });
+        };
+
+        const handleCloseAtStartMode = () => {
+            this.setState({
+                mode: MODE_START,
+                prevMode: MODE_MODAL,
+                open: false
+            });
+        };
+
+        const handleCloseAtPauseMode = () => {
+            this.setState({
+                mode: MODE_PAUSE,
+                prevMode: MODE_MODAL,
+                open: false
+            });
+        };
+
+        const handleClose = (event) => {
+            keyDownProcess(event);
+        };
+
+        const handleOpenAtModalMode = () => {
+            this.setState({
+                mode: MODE_MODAL,
+                prevMode: MODE_PAUSE,
+                open: true
+            });
+        };
+
+        const keyDownProcess = (event) => {
+            const letter = rightText[0];
+            const key = event.key;
+            const code = event.code;
+            const id = event.currentTarget.id;
+
+            if (mode === MODE_PRESTART && code === SPACE) {
+                this.setState({
+                    mode: MODE_START,
+                    prevMode: MODE_PRESTART,
+                    start: false,
+                    reset: true,
+                    pause: false,
+                    resume: false,
+                    stop: false
+                });
+                handleClickSpaceAtStart();
+            } else if (mode === MODE_PRESTART && key === ESCAPE) {
+                this.setState({
+                    mode: MODE_MODAL,
+                    prevMode: MODE_PRESTART,
+                    open: true,
+                    start: false,
+                    reset: true,
+                    pause: false,
+                    resume: false,
+                    stop: false
+                });
+            } else if (mode === MODE_START && key === letter) {
+                this.setState({
+                    mode: MODE_PROGRESS,
+                    prevMode: MODE_START,
+                    start: true,
+                    stop: false,
+                    pause: false,
+                    resume: false,
+                    reset: false
+                });
+                handleTypeCorrectSign(key);
+            } else if (mode === MODE_START && key === ESCAPE) {
+                this.setState({
+                    mode: MODE_MODAL,
+                    prevMode: MODE_START,
+                    open: true,
+                    start: false,
+                    reset: true,
+                    pause: false,
+                    resume: false,
+                    stop: false
+                });
+            } else if (mode === MODE_PROGRESS && key === ESCAPE) {
+                this.setState({
+                    mode: MODE_MODAL,
+                    prevMode: MODE_PROGRESS,
+                    open: true,
+                    start: false,
+                    pause: true,
+                    resume: false,
+                    stop: false,
+                    reset: false
+                });
+            } else if (mode === MODE_PROGRESS && key === letter) {
+                handleTypeCorrectSign(key);
+            } else if (mode === MODE_PROGRESS && key !== letter && event.keyCode >= 32 && event.keyCode <= 122) {
+                handleTypeIncorrectSign();
+            } else if (mode === MODE_PAUSE && key === ESCAPE) {
+                handleOpenAtModalMode();
+            } else if (mode === MODE_PAUSE && key === letter) {
+                this.setState({
+                    mode: MODE_PROGRESS,
+                    prevMode: MODE_PAUSE,
+                    start: false,
+                    resume: true,
+                    pause: false,
+                    stop: false,
+                    reset: false
+                });
+                handleTypeCorrectSign(key);
+            } else if (mode === MODE_MODAL && id === BUTTON_COMPLETE) {
+                handleCloseAtPrestartMode();
+                setDataInPrestartMode();
+            } else if (mode === MODE_MODAL && id === BUTTON_START_OVER) {
+                handleCloseAtStartMode();
+                setDataInStartMode();
+            } else if (mode === MODE_MODAL && prevMode === MODE_PRESTART && key === ESCAPE) {
+                handleCloseAtPrestartMode();
+            } else if (mode === MODE_MODAL && prevMode === MODE_PAUSE && key === ESCAPE) {
+                this.setState({
+                    mode: MODE_PAUSE,
+                    prevMode: MODE_MODAL,
+                    open: false,
+                    start: false,
+                    pause: true,
+                    resume: false,
+                    stop: false,
+                    reset: false
+                });
+            } else if (mode === MODE_MODAL && prevMode === MODE_START && key === ESCAPE) {
+                handleCloseAtStartMode();
+            } else if ((mode === MODE_MODAL && prevMode === MODE_PROGRESS && key === ESCAPE) || (mode === MODE_MODAL && id === BUTTON_RESUME)) {
+                handleCloseAtPauseMode();
             }
+        };
+
+        window.onkeydown = (event) => {
+            keyDownProcess(event);
+        };
+
+        return (
+            <div className={classes.root}>
+                <AppBarComponent/>
+                <Toolbar/>
+
+                <TimerComponent
+                    start={start}
+                    pause={pause}
+                    resume={resume}
+                    stop={stop}
+                    reset={reset}
+                    addDataToChart={addDataToChart}
+                />
+
+                <EntryField
+                    leftText={leftText}
+                    rightText={rightText}
+                    typedChars={typedChars}
+                    typedCorrectChars={typedCorrectChars}
+                    chartData={chartData}
+                    open={open}
+                    onClose={handleClose}
+                    handleClickButton={keyDownProcess}
+                />
+            </div>
         );
-    };
+    }
+}
 
-    const resetTypedChars = () => {
-        setTypedChars(0);
-        setTypedCorrectChars(0);
-        setChartData([]);
-    };
-
-    const setDataInPrestartMode = () => {
-        timer.reset();
-        setTime(MIDNIGHT_TIME);
-        setLeftText(SPACE_START);
-        setRightText(ESCAPE_PAUSE);
-        resetTypedChars();
-    };
-
-    const setDataInStartMode = () => {
-        timer.reset();
-        setTime(MIDNIGHT_TIME);
-        setLeftText("");
-        setRightText(text);
-        resetTypedChars();
-    };
-
-    const handleClickSpaceAtStart = () => {
-        setLeftText("");
-        setRightText(text);
-    };
-
-    const handleTypeCorrectSign = (key) => {
-        setLeftText(leftText + key);
-        setRightText(rightText.slice(1));
-        setTypedChars(typedChars + 1);
-        setTypedCorrectChars(typedCorrectChars + 1);
-    };
-
-    const handleClose = (event) => {
-        keyDownProcess(event);
-    };
-
-    const keyDownProcess = (event) => {
-        const letter = rightText[0];
-        const key = event.key;
-        const code = event.code;
-        const id = event.currentTarget.id;
-
-        if (mode === MODE_PRESTART && code === SPACE) {
-            setMode(MODE_START);
-            setPrevMode(MODE_PRESTART);
-            timer.reset();
-            handleClickSpaceAtStart();
-        } else if (mode === MODE_PRESTART && key === ESCAPE) {
-            setMode(MODE_MODAL);
-            setPrevMode(MODE_PRESTART);
-            timer.reset();
-            setOpen(true);
-        } else if (mode === MODE_START && key === letter) {
-            setMode(MODE_PROGRESS);
-            setPrevMode(MODE_START);
-            timer.start();
-            handleTypeCorrectSign(key);
-        } else if (mode === MODE_START && key === ESCAPE) {
-            setMode(MODE_MODAL);
-            setPrevMode(MODE_START);
-            timer.reset();
-            setOpen(true);
-        } else if (mode === MODE_PROGRESS && key === ESCAPE) {
-            setMode(MODE_MODAL);
-            setPrevMode(MODE_PROGRESS);
-            timer.stop();
-            setOpen(true);
-        } else if (mode === MODE_PROGRESS && key === letter) {
-            handleTypeCorrectSign(key);
-        } else if (mode === MODE_PAUSE && key === ESCAPE) {
-            setMode(MODE_MODAL);
-            setPrevMode(MODE_PAUSE);
-            setOpen(true);
-        } else if (mode === MODE_PAUSE && key === letter) {
-            setMode(MODE_PROGRESS);
-            setPrevMode(MODE_PAUSE);
-            timer.resume();
-            handleTypeCorrectSign(key);
-        } else if (mode === MODE_MODAL && id === BUTTON_COMPLETE) {
-            setMode(MODE_PRESTART);
-            setPrevMode(MODE_MODAL);
-            setOpen(false);
-            setDataInPrestartMode();
-        } else if (mode === MODE_MODAL && id === BUTTON_START_OVER) {
-            setMode(MODE_START);
-            setPrevMode(MODE_MODAL);
-            setOpen(false);
-            setDataInStartMode();
-        } else if (mode === MODE_MODAL && prevMode === MODE_PRESTART && key === ESCAPE) {
-            setMode(MODE_PRESTART);
-            setPrevMode(MODE_MODAL);
-            setOpen(false);
-        } else if (mode === MODE_MODAL && prevMode === MODE_PAUSE && key === ESCAPE) {
-            setMode(MODE_PAUSE);
-            setPrevMode(MODE_MODAL);
-            setOpen(false);
-        } else if (mode === MODE_MODAL && prevMode === MODE_START && key === ESCAPE) {
-            setMode(MODE_START);
-            setPrevMode(MODE_MODAL);
-            setOpen(false);
-        } else if ((mode === MODE_MODAL && prevMode === MODE_PROGRESS && key === ESCAPE) || (mode === MODE_MODAL && id === BUTTON_RESUME)) {
-            setMode(MODE_PAUSE);
-            setPrevMode(MODE_MODAL);
-            setOpen(false);
-        }
-    };
-
-    window.onkeydown = (event) => {
-        keyDownProcess(event);
-    };
-
-    return (
-        <div className={classes.root}>
-            <AppBarComponent/>
-            <Toolbar/>
-
-            <Container className={classes.timer}>
-                <TimerView time={time}/>
-            </Container>
-
-            <EntryField
-                leftText={leftText}
-                rightText={rightText}
-                typedChars={typedChars}
-                typedCorrectChars={typedCorrectChars}
-                timer={timer}
-                chartData={chartData}
-                open={open}
-                onClose={handleClose}
-                handleClickButton={keyDownProcess}
-            />
-        </div>
-    );
-};
-
-export default Body;
+export default withStyles(useStyles)(Body);

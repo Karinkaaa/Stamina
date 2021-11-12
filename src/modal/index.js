@@ -28,7 +28,7 @@ const useStyles = makeStyles({
         transform: "translate(-50%, -50%)",
         width: "fit-content",
         height: "fit-content",
-        background: "rgba(24,26,27,0.29)",
+        background: "rgb(24,26,27)",
         boxShadow: "0 0 10px cyan"
     },
     btn: {
@@ -37,10 +37,10 @@ const useStyles = makeStyles({
     }
 });
 
-const ModalComponent = ({ typedChars, typedCorrectChars, timer, chartData, open, onClose, handleClickButton }) => {
+const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClose, handleClickButton }) => {
     const classes = useStyles();
 
-    const { minutes, seconds } = getMinutesAndSeconds(timer.getSeconds());
+    const { minutes, seconds } = getMinutesAndSeconds(chartData.length);
     const timeInSeconds = getTimeInSeconds(minutes, seconds);
     const speed = getTypingSpeed(typedCorrectChars, timeInSeconds);
     const accuracy = getTypingAccuracy(typedChars, typedCorrectChars);
@@ -90,7 +90,6 @@ const ModalComponent = ({ typedChars, typedCorrectChars, timer, chartData, open,
 ModalComponent.propTypes = {
     typedChars: PropTypes.number.isRequired,
     typedCorrectChars: PropTypes.number.isRequired,
-    timer: PropTypes.object.isRequired,
     chartData: PropTypes.arrayOf(
         PropTypes.shape({
             seconds: PropTypes.number.isRequired,
