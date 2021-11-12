@@ -10,6 +10,7 @@
     "gsap": "^3.8.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-compound-timer": "^1.2.0",
     "react-dom": "^16.13.1",
     "react-scripts": "^4.0.3",
     "recharts": "^2.1.5"
