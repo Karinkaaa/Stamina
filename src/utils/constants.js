@@ -27,3 +27,8 @@ export const MODE_MODAL = "MODE_MODAL";
 export const BUTTON_COMPLETE = "Complete";
 export const BUTTON_START_OVER = "Start over";
 export const BUTTON_RESUME = "Resume";
+
+export const MAX_SECONDS = 180;
+export const ONE_HUNDRED_PERCENT = 100;
+export const ONE_HOUR_IN_SECONDS = 3600;
+export const ONE_MINUTE_IN_SECONDS = 60;
