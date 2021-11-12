@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "/stamina/static/js/main.c0698c76.chunk.js",
+    "main.js.map": "/stamina/static/js/main.c0698c76.chunk.js.map",
+    "runtime-main.js": "/stamina/static/js/runtime-main.a5ed11d2.js",
+    "runtime-main.js.map": "/stamina/static/js/runtime-main.a5ed11d2.js.map",
+    "static/js/2.f1a0135e.chunk.js": "/stamina/static/js/2.f1a0135e.chunk.js",
+    "static/js/2.f1a0135e.chunk.js.map": "/stamina/static/js/2.f1a0135e.chunk.js.map",
+    "index.html": "/stamina/index.html",
+    "static/js/2.f1a0135e.chunk.js.LICENSE.txt": "/stamina/static/js/2.f1a0135e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a5ed11d2.js",
+    "static/js/2.f1a0135e.chunk.js",
+    "static/js/main.c0698c76.chunk.js"
+  ]
+}
