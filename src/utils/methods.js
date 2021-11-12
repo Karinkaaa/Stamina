@@ -1,16 +1,18 @@
+import { ONE_HOUR_IN_SECONDS, ONE_HUNDRED_PERCENT, ONE_MINUTE_IN_SECONDS } from "./constants";
+
 export const getMinutesAndSeconds = (seconds) => {
     return {
-        minutes: Math.floor(seconds % 3600 / 60),
-        seconds: Math.floor(seconds % 3600 % 60)
+        minutes: Math.floor(seconds % ONE_HOUR_IN_SECONDS / ONE_MINUTE_IN_SECONDS),
+        seconds: Math.floor(seconds % ONE_HOUR_IN_SECONDS % ONE_MINUTE_IN_SECONDS)
     };
 };
 
 export const getTimeInSeconds = (minutes, seconds) => {
-    return (minutes * 60) + seconds;
+    return (minutes * ONE_MINUTE_IN_SECONDS) + seconds;
 };
 
 export const getTypingSpeed = (typedCorrectChars, seconds) => {
-    return (seconds <= 0) ? 0 : Math.floor((typedCorrectChars / seconds) * 60);
+    return (seconds <= 0) ? 0 : Math.floor((typedCorrectChars / seconds) * ONE_MINUTE_IN_SECONDS);
 };
 
 export const getPercentOfMistakes = (typedChars, typedCorrectChars) => {
@@ -20,23 +22,19 @@ export const getPercentOfMistakes = (typedChars, typedCorrectChars) => {
     if (b === 0) {
         return 0;
     } else if (a > b) {
-        return Math.round(((a - b) / a) * 100);
+        return Math.round(((a - b) / a) * ONE_HUNDRED_PERCENT);
     } else {
-        return Math.round(((b - a) / a) * 100);
+        return Math.round(((b - a) / a) * ONE_HUNDRED_PERCENT);
     }
 };
 
 export const getTypingAccuracy = (typedChars, typedCorrectChars) => {
     if (typedChars === 0) return 0;
 
-    const accuracy = 100 - getPercentOfMistakes(typedChars, typedCorrectChars);
+    const accuracy = ONE_HUNDRED_PERCENT - getPercentOfMistakes(typedChars, typedCorrectChars);
     return Math.trunc(accuracy) - accuracy === 0 ? Math.trunc(accuracy) : accuracy;
 };
 
-export const getMinutesInStringFormat = (minutes) => {
-    return minutes > 0 ? (minutes < 10 ? "0" + minutes : minutes) : "00";
-};
-
-export const getSecondsInStringFormat = (seconds) => {
-    return seconds > 0 ? (seconds < 10 ? "0" + seconds : seconds) : "00";
+export const getTimeUnitInStringFormat = (unit) => {
+    return `${unit < 10 ? `0${unit}` : unit}`;
 };
