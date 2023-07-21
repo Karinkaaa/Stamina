@@ -9,6 +9,7 @@ import {
     BUTTON_COMPLETE,
     BUTTON_RESUME,
     BUTTON_START_OVER,
+    MAX_SECONDS,
     PERCENT_SIGN,
     SIGNS,
     SIGNS_PER_MINUTE,
@@ -33,17 +34,25 @@ const useStyles = makeStyles({
     },
     btn: {
         background: "whitesmoke",
-        margin: 10
-    }
+        margin: 10,
+        "&:hover": {
+            color: "white",
+            background: "#333333",
+        }
+    },
+    bthHide: {
+        visibility: (param) => param ? "hidden" : "visible"
+    },
 });
 
 const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClose, handleClickButton }) => {
-    const classes = useStyles();
-
     const { minutes, seconds } = getMinutesAndSeconds(chartData.length);
     const timeInSeconds = getTimeInSeconds(minutes, seconds);
     const speed = getTypingSpeed(typedCorrectChars, timeInSeconds);
     const accuracy = getTypingAccuracy(typedChars, typedCorrectChars);
+
+    const isHiddenBtn = MAX_SECONDS <= timeInSeconds * 1000;
+    const classes = useStyles(isHiddenBtn);
 
     return (
         <Modal
@@ -68,7 +77,7 @@ const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClos
 
                 <Button
                     id={BUTTON_START_OVER}
-                    className={classes.btn}
+                    className={`${classes.btn} ${classes.bthHide}`}
                     onClick={handleClickButton}
                 >
                     {BUTTON_START_OVER}
@@ -76,7 +85,7 @@ const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClos
 
                 <Button
                     id={BUTTON_RESUME}
-                    className={classes.btn}
+                    className={`${classes.btn} ${classes.bthHide}`}
                     onClick={handleClickButton}
                     disabled={typedCorrectChars === 0}
                 >

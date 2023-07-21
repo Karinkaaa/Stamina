@@ -1,30 +1,27 @@
-import { ONE_HOUR_IN_SECONDS, ONE_HUNDRED_PERCENT, ONE_MINUTE_IN_SECONDS } from "./constants";
+import { SECONDS_IN_HOUR, ONE_HUNDRED_PERCENT, SECONDS_IN_MINUTE } from "./constants";
 
 export const getMinutesAndSeconds = (seconds) => {
     return {
-        minutes: Math.floor(seconds % ONE_HOUR_IN_SECONDS / ONE_MINUTE_IN_SECONDS),
-        seconds: Math.floor(seconds % ONE_HOUR_IN_SECONDS % ONE_MINUTE_IN_SECONDS)
+        minutes: Math.floor(seconds % SECONDS_IN_HOUR / SECONDS_IN_MINUTE),
+        seconds: Math.floor(seconds % SECONDS_IN_HOUR % SECONDS_IN_MINUTE)
     };
 };
 
 export const getTimeInSeconds = (minutes, seconds) => {
-    return (minutes * ONE_MINUTE_IN_SECONDS) + seconds;
+    return (minutes * SECONDS_IN_MINUTE) + seconds;
 };
 
 export const getTypingSpeed = (typedCorrectChars, seconds) => {
-    return (seconds <= 0) ? 0 : Math.floor((typedCorrectChars / seconds) * ONE_MINUTE_IN_SECONDS);
+    return (seconds <= 0) ? 0 : Math.floor((typedCorrectChars / seconds) * SECONDS_IN_MINUTE);
 };
 
 export const getPercentOfMistakes = (typedChars, typedCorrectChars) => {
-    const a = typedChars;
-    const b = typedCorrectChars;
-
-    if (b === 0) {
+    if (typedCorrectChars === 0) {
         return 0;
-    } else if (a > b) {
-        return Math.round(((a - b) / a) * ONE_HUNDRED_PERCENT);
+    } else if (typedChars > typedCorrectChars) {
+        return Math.round(((typedChars - typedCorrectChars) / typedChars) * ONE_HUNDRED_PERCENT);
     } else {
-        return Math.round(((b - a) / a) * ONE_HUNDRED_PERCENT);
+        return Math.round(((typedCorrectChars - typedChars) / typedChars) * ONE_HUNDRED_PERCENT);
     }
 };
 

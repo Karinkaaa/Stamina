@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-const Chart = ({ data }) => {
+const Chart = ({ data = [] }) => {
     return (
         <ResponsiveContainer minWidth={1000} minHeight={400}>
             <LineChart
@@ -17,14 +17,15 @@ const Chart = ({ data }) => {
                 }}
             >
                 <CartesianGrid strokeDasharray={"3 3"}/>
-                <XAxis dataKey={"seconds"}/>
-                <YAxis yAxisId={"left"}/>
-                <YAxis yAxisId={"right"} orientation={"right"} domain={[0, 100]}/>
-                <Tooltip/>
+                <XAxis dataKey={"seconds"} domain={[0, data.lendth]} />
+                <YAxis yAxisId={"left"} domain={[0, 100]} />
+                <YAxis yAxisId={"right"} orientation={"right"} domain={[0, 100]} />
+                <Tooltip label={'sec'} />
                 <Line
                     yAxisId={"right"}
                     type={"monotone"}
                     dataKey={"mistakes"}
+                    unit={"%"}
                     stroke={"#e34f26"}
                     dot={{ r: 0 }}
                     activeDot={{ r: 5 }}
@@ -33,6 +34,7 @@ const Chart = ({ data }) => {
                     yAxisId={"left"}
                     type={"monotone"}
                     dataKey={"speed"}
+                    unit={" signs/minute"}
                     stroke={"#00b0ff"}
                     dot={{ r: 0 }}
                 />

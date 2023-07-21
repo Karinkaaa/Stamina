@@ -9,7 +9,6 @@ export const TYPED_CHARS = "Typed chars";
 export const SPEED = "Speed";
 export const ACCURACY = "Accuracy";
 
-export const MIDNIGHT_TIME = "00 : 00";
 export const SIGNS = " signs";
 export const SIGNS_PER_MINUTE = " signs/minute";
 export const PERCENT_SIGN = "%";
@@ -28,7 +27,8 @@ export const BUTTON_COMPLETE = "Complete";
 export const BUTTON_START_OVER = "Start over";
 export const BUTTON_RESUME = "Resume";
 
-export const MAX_SECONDS = 180;
 export const ONE_HUNDRED_PERCENT = 100;
-export const ONE_HOUR_IN_SECONDS = 3600;
-export const ONE_MINUTE_IN_SECONDS = 60;
+export const SECONDS_IN_HOUR = 3600;
+export const SECONDS_IN_MINUTE = 60;
+export const MILLISECONDS_IN_SECOND = 1000;
+export const MAX_SECONDS = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * 3;
