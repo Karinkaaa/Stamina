@@ -1,3 +1,9 @@
+## [Demo version](https://karinkaaa.github.io/Stamina/)
+
+#### Preview:
+![preview](/public/preview.png)
+![preview](/public/preview2.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
