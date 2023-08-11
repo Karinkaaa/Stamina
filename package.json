@@ -1,8 +1,8 @@
 {
-  "name": "stamina",
+  "name": "Stamina",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Karinkaaa.github.io/stamina",
+  "homepage": "https://Karinkaaa.github.io/Stamina",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^9.3.2",
