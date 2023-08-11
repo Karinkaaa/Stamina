@@ -1,4 +1,4 @@
-## [Demo version](https://karinkaaa.github.io/Stamina/)
+## [Demo version](https://karinkaaa.github.io/stamina/)
 
 #### Preview:
 ![preview](/public/preview.png)
