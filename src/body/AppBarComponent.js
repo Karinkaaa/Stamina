@@ -4,8 +4,8 @@ import { STAMINA } from "../utils/constants";
 
 const useStyles = makeStyles({
     root: {
-        background: "#35b0ff2e",
-        boxShadow: "0 0 2px whitesmoke"
+        background: "#2c2c65",
+        boxShadow: "0 0 10px navy"
     },
     typo: {
         fontSize: 25,

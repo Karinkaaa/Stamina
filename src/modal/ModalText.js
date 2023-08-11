@@ -8,10 +8,11 @@ const useStyles = makeStyles({
         fontSize: 20
     },
     strong: {
-        color: "#fff"
+        color: "#2c2c65"
     },
     em: {
-        color: "#d7ef00"
+        color: "#7a84bf",
+        fontWeight: "bold"
     }
 });
 

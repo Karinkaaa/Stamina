@@ -26,7 +26,7 @@ const Chart = ({ data = [] }) => {
                     type={"monotone"}
                     dataKey={"mistakes"}
                     unit={"%"}
-                    stroke={"#e34f26"}
+                    stroke={"red"}
                     dot={{ r: 0 }}
                     activeDot={{ r: 5 }}
                 />
@@ -35,7 +35,7 @@ const Chart = ({ data = [] }) => {
                     type={"monotone"}
                     dataKey={"speed"}
                     unit={" signs/minute"}
-                    stroke={"#00b0ff"}
+                    stroke={"dodgerblue"}
                     dot={{ r: 0 }}
                 />
             </LineChart>

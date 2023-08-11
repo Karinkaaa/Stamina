@@ -29,15 +29,18 @@ const useStyles = makeStyles({
         transform: "translate(-50%, -50%)",
         width: "fit-content",
         height: "fit-content",
-        background: "rgb(24,26,27)",
-        boxShadow: "0 0 10px cyan"
+        borderRadius: 10,
+        outline: "none",
+        background: "white",
+        boxShadow: "0 0 7px whitesmoke"
     },
     btn: {
-        background: "whitesmoke",
         margin: 10,
+        padding: "7px 15px",
         "&:hover": {
             color: "white",
-            background: "#333333",
+            background: "#7a84bf",
+            border: "1px solid #7a84bf"
         }
     },
     bthHide: {
@@ -61,14 +64,16 @@ const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClos
             className={classes.root}
         >
             <Box className={classes.box}>
-                <ModalText text={TYPED_CHARS} data={typedCorrectChars + SIGNS}/>
-                <ModalText text={SPEED} data={speed + SIGNS_PER_MINUTE}/>
-                <ModalText text={ACCURACY} data={accuracy + PERCENT_SIGN}/>
+                <ModalText text={TYPED_CHARS} data={typedCorrectChars + SIGNS} />
+                <ModalText text={SPEED} data={speed + SIGNS_PER_MINUTE} />
+                <ModalText text={ACCURACY} data={accuracy + PERCENT_SIGN} />
 
-                <Chart data={chartData}/>
+                <Chart data={chartData} />
 
                 <Button
                     id={BUTTON_COMPLETE}
+                    color="primary"
+                    variant="outlined"
                     className={classes.btn}
                     onClick={handleClickButton}
                 >
@@ -77,6 +82,8 @@ const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClos
 
                 <Button
                     id={BUTTON_START_OVER}
+                    color="primary"
+                    variant="outlined"
                     className={`${classes.btn} ${classes.bthHide}`}
                     onClick={handleClickButton}
                 >
@@ -85,6 +92,8 @@ const ModalComponent = ({ typedChars, typedCorrectChars, chartData, open, onClos
 
                 <Button
                     id={BUTTON_RESUME}
+                    color="primary"
+                    variant="outlined"
                     className={`${classes.btn} ${classes.bthHide}`}
                     onClick={handleClickButton}
                     disabled={typedCorrectChars === 0}

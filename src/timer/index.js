@@ -11,22 +11,22 @@ const useStyles = () => ({
   },
   typo: {
     textAlign: "center",
-    background: "#FFFFFF",
+    background: "white",
     color: "#333333",
-    border: "3px solid #99B4D1",
+    border: "3px solid #7a84bf",
     borderRadius: 20,
     width: 100,
     padding: 10,
     fontSize: 20,
   },
   typoFinish: {
-    background: "red",
-    color: "white",
+    background: "lightcoral",
+    border: "3px solid red",
     animation: "$blink 1.5s infinite",
   },
   "@keyframes blink": {
     "50%": {
-      background: "transparent",
+      background: "whitesmoke",
     },
   },
 });
