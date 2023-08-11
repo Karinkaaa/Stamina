@@ -52,7 +52,7 @@ class Body extends React.Component {
         const seconds = this.state.chartData.length;
 
         this.state.chartData.push({
-            seconds: seconds + "s",
+            seconds,
             speed: getTypingSpeed(this.state.typedCorrectChars, seconds),
             mistakes: getPercentOfMistakes(this.state.typedChars, this.state.typedCorrectChars)
         });

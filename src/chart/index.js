@@ -8,7 +8,7 @@ const Chart = ({ data = [] }) => {
             <LineChart
                 width={500}
                 height={300}
-                data={data}
+                data={data.map(item => ({...item, seconds: item.seconds + "s" }))}
                 margin={{
                     top: 30,
                     right: 30,
