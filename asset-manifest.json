@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/stamina/static/js/main.0c6bec24.chunk.js",
-    "main.js.map": "/stamina/static/js/main.0c6bec24.chunk.js.map",
-    "runtime-main.js": "/stamina/static/js/runtime-main.eb9ea1f9.js",
-    "runtime-main.js.map": "/stamina/static/js/runtime-main.eb9ea1f9.js.map",
-    "static/js/2.d2ac972b.chunk.js": "/stamina/static/js/2.d2ac972b.chunk.js",
-    "static/js/2.d2ac972b.chunk.js.map": "/stamina/static/js/2.d2ac972b.chunk.js.map",
-    "index.html": "/stamina/index.html",
-    "static/js/2.d2ac972b.chunk.js.LICENSE.txt": "/stamina/static/js/2.d2ac972b.chunk.js.LICENSE.txt"
+    "main.js": "/Stamina/static/js/main.fd9ce6f1.chunk.js",
+    "main.js.map": "/Stamina/static/js/main.fd9ce6f1.chunk.js.map",
+    "runtime-main.js": "/Stamina/static/js/runtime-main.03aefd30.js",
+    "runtime-main.js.map": "/Stamina/static/js/runtime-main.03aefd30.js.map",
+    "static/js/2.efa2df8c.chunk.js": "/Stamina/static/js/2.efa2df8c.chunk.js",
+    "static/js/2.efa2df8c.chunk.js.map": "/Stamina/static/js/2.efa2df8c.chunk.js.map",
+    "index.html": "/Stamina/index.html",
+    "static/js/2.efa2df8c.chunk.js.LICENSE.txt": "/Stamina/static/js/2.efa2df8c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.eb9ea1f9.js",
-    "static/js/2.d2ac972b.chunk.js",
-    "static/js/main.0c6bec24.chunk.js"
+    "static/js/runtime-main.03aefd30.js",
+    "static/js/2.efa2df8c.chunk.js",
+    "static/js/main.fd9ce6f1.chunk.js"
   ]
 }
